@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ""
+          image: imzacm/invader3:latest
           ports:
             - name: http
               containerPort: 8080

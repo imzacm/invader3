@@ -21,6 +21,6 @@ jobs:
 
       - name: Build and push docker image
         run: |
-          docker build . -t invader3:${GITHUB_SHA} -t invader3:latest
-          docker push invader3:${GITHUB_SHA}
-          docker push invader3:latest
+          docker build . -t imzacm/invader3:${GITHUB_SHA} -t imzacm/invader3:latest
+          docker push imzacm/invader3:${GITHUB_SHA}
+          docker push imzacm/invader3:latest

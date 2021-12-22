@@ -11,11 +11,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Modify deployment image
-        uses: mikefarah/yq@master
-        with:
-          cmd: yq eval -i ".spec.template.spec.containers[0].image = \"imzacm/invader3:${GITHUB_SHA}\"" ./kubernetes/deployment.yaml
-        env:
-          GITHUB_SHA: ${{ env.GITHUB_SHA }}
+        run: sed -i "s/imzacm\/invader3:latest/imzacm\/invader3:${GITHUB_SHA}/" ./kubernetes/deployment.yaml
 
       # Usage: https://github.com/Azure/k8s-set-context/tree/releases/v1
       - uses: azure/k8s-set-context@v1

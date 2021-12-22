@@ -15,7 +15,7 @@ spec:
           - path: /invader3
             pathType: ImplementationSpecific
             backend:
-              server:
+              service:
                 name: invader3
                 port:
                   number: 80

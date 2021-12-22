@@ -1,0 +1,28 @@
+name: Kubernetes
+on:
+  push:
+    branches:
+      - master
+jobs:
+  kubernetes:
+    name: Deploy to kubernetes
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Modify deployment image
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq eval -i '.spec.template.spec.containers[0].image = "invader3:${GITHUB_SHA}" ./kubernetes/deployment.yaml'
+
+      # Usage: https://github.com/Azure/k8s-set-context/tree/releases/v1
+      - uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+        id: setcontext
+
+      - name: Deploy
+        run: |
+          kubectl apply -f ./kubernetes
+          kubectl rollout status deployment/invader3

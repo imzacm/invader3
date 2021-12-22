@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 RUN apk add curl
 RUN curl -L https://unpkg.com/@pnpm/self-installer | node && \
     pnpm config set store-dir /usr/src/app/.pnpm-store
-COPY *.json *.yaml *.js ./
+COPY *.json *.yaml *.js .*rc ./
 RUN pnpm install
 COPY src ./src
 RUN pnpm run build

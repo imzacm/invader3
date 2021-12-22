@@ -1,5 +1,6 @@
 FROM node:16-alpine AS builder
 WORKDIR /usr/src/app
+RUN apk add curl
 RUN curl -L https://unpkg.com/@pnpm/self-installer | node && \
     pnpm config set store-dir /usr/src/app/.pnpm-store
 COPY *.json *.yaml *.js ./

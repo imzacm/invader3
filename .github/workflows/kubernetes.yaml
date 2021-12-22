@@ -13,7 +13,7 @@ jobs:
       - name: Modify deployment image
         uses: mikefarah/yq@master
         with:
-          cmd: yq eval -i '.spec.template.spec.containers[0].image = "invader3:${GITHUB_SHA}" ./kubernetes/deployment.yaml'
+          cmd: yq eval -i '.spec.template.spec.containers[0].image = "invader3:${GITHUB_SHA}"' ./kubernetes/deployment.yaml
 
       # Usage: https://github.com/Azure/k8s-set-context/tree/releases/v1
       - uses: azure/k8s-set-context@v1

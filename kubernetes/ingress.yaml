@@ -12,6 +12,13 @@ spec:
     - host: zacm.uk
       http:
         paths:
+          - path: /invader3/(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: invader3
+                port:
+                  number: 80
           - path: /invader3
             pathType: ImplementationSpecific
             backend:

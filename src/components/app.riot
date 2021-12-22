@@ -1,0 +1,60 @@
+<app>
+  <table id="config-table">
+    <thead>
+    <tr>
+      <th colspan="2">Parameters</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr each={ key in Object.keys(state) }>
+      <th><label for={ key }>{ key[0].toUpperCase() + key.substring(1) }</label></th>
+      <td><input id={ key } type="number" value={ state[key] } onkeyup={ updateConfig }></td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+  <power-table { ...state }/>
+
+  <style>
+      #config-table {
+          border-collapse: collapse;
+      }
+
+      #config-table th, #config-table td {
+          padding: 8px;
+          text-align: left;
+          border: 1px solid black;
+      }
+  </style>
+
+  <script>
+    import PowerTable from './power-table.riot'
+
+    export default {
+      components: { PowerTable },
+      onBeforeMount(props) {
+        this.state = {
+          min: props.min ?? null,
+          max: props.max ?? null,
+          increment: props.increment ?? null,
+          ohms: props.ohms ?? null
+        }
+      },
+      updateConfig(e) {
+        const configKey = e.target.id
+        const configValue = e.target.value
+        if (!this.state.hasOwnProperty(configKey)) {
+          return
+        }
+        if (!configValue) {
+          this.update({ [configKey]: null })
+          return
+        }
+        const valueNum = Number(configValue)
+        if (!Number.isNaN(valueNum)) {
+          this.update({ [configKey]: valueNum })
+        }
+      }
+    }
+  </script>
+</app>

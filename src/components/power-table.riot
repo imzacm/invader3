@@ -1,0 +1,73 @@
+<power-table>
+  <table>
+    <thead>
+    <tr>
+      <th colspan="4">Power table</th>
+    </tr>
+    <tr>
+      <th>Step</th>
+      <th>Volts</th>
+      <th>Ohms</th>
+      <th>Watts</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr each={ item in state.items }>
+      <td>{ item.step }</td>
+      <td>{ item.v.toFixed(2) }</td>
+      <td>{ props.ohms ?? '' }</td>
+      <td>{ item.w ? item.w.toFixed(2) : '' }</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <style>
+      table {
+          border-collapse: collapse;
+          width: 100%;
+      }
+
+      th, td {
+          padding: 8px;
+          text-align: left;
+          border: 1px solid black;
+      }
+
+      tr:hover {
+          background-color: darkgray;
+      }
+  </style>
+
+  <script>
+    function calculateData(min, max, increment, ohms) {
+      min = min / 0.01
+      max = max / 0.01
+      increment = increment / 0.01
+      ohms = typeof ohms === 'number' ? ohms / 0.01 : null
+      console.log({ min, max, increment, ohms })
+      // TODO: Assert arguments
+      const length = ((max - min) / increment) + 1
+      const data = new Array(length)
+      for (let i = 0, v = min; v <= max; i++, v += increment) {
+        const item = { step: `${ i + 1 }`, v: v * 0.01 }
+        if (ohms) {
+          // Calculation reverse engineered from https://ohmslawcalculator.com/ohms-law-calculator
+          const amps = v / ohms
+          item.w = (v * amps) * 0.01
+        }
+        data[i] = item
+      }
+      return data
+    }
+
+    export default {
+      onBeforeMount(props) {
+        const items = calculateData(props.min, props.max, props.increment, props.ohms)
+        this.state = { items }
+      },
+      onBeforeUpdate(props) {
+        this.state.items = calculateData(props.min, props.max, props.increment, props.ohms)
+      }
+    }
+  </script>
+</power-table>
